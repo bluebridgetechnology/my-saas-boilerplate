@@ -5,6 +5,7 @@
     "build": "next build",
     "start": "next start",
     "setup": "node scripts/setup-boilerplate.js",
+    "create-project": "node scripts/create-new-project.js",
     "db:setup": "echo 'Run the SQL migration in your Supabase dashboard (see SUPABASE_SETUP.md)'",
     "db:seed": "echo 'Seed data will be created automatically on first signup'",
     "lint": "next lint"
