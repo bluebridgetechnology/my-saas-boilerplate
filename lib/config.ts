@@ -38,7 +38,6 @@ export const config = {
     
     // Stripe settings
     settings: {
-      trialPeriodDays: 14,
       currency: 'usd',
     },
   },

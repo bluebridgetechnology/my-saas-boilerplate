@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import { redirect } from 'next/navigation';
 import { User, DatabaseService, supabaseAdmin } from '@/lib/supabase/database';
 import { getUser } from '@/lib/auth/supabase';
+import { NotificationService } from '@/lib/email/notification-service';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder';
 
@@ -26,6 +27,24 @@ export async function createCheckoutSession({
     redirect(`/sign-up?redirect=checkout&priceId=${priceId}`);
   }
 
+  // Create or get Stripe customer
+  let customerId = user.stripe_customer_id;
+  if (!customerId) {
+    const customer = await stripe.customers.create({
+      email: user.email,
+      name: user.name || undefined,
+      metadata: {
+        user_id: user.id
+      }
+    });
+    customerId = customer.id;
+    
+    // Update user with customer ID
+    await DatabaseService.updateUser(user.id, {
+      stripe_customer_id: customerId
+    });
+  }
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: [
@@ -37,11 +56,18 @@ export async function createCheckoutSession({
     mode: 'subscription',
     success_url: `${process.env.BASE_URL}/api/stripe/checkout?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.BASE_URL}/pricing`,
-    customer: user.stripe_customer_id || undefined,
+    customer: customerId,
     client_reference_id: user.id,
     allow_promotion_codes: true,
     subscription_data: {
-      trial_period_days: 14
+      metadata: {
+        user_id: user.id,
+        plan_type: 'pro'
+      }
+    },
+    metadata: {
+      user_id: user.id,
+      upgrade_source: 'checkout'
     }
   });
 
@@ -136,22 +162,42 @@ export async function handleSubscriptionChange(
   }
 
   const user = users[0];
+  const notificationContext = {
+    userId: user.id,
+    userEmail: user.email,
+    userName: user.name || user.email.split('@')[0],
+  };
 
   if (status === 'active' || status === 'trialing') {
     const plan = subscription.items.data[0]?.plan;
+    const planName = plan?.nickname || 'Pro';
+    
     await DatabaseService.updateUser(user.id, {
       stripe_subscription_id: subscriptionId,
       stripe_product_id: plan?.product as string,
-      plan_name: (plan?.product as Stripe.Product).name,
+      plan_name: planName,
       subscription_status: status
     });
+
+    // Send welcome notification for new subscriptions
+    if (status === 'active' && !user.stripe_subscription_id) {
+      await NotificationService.sendWelcomeNotification(notificationContext);
+    }
   } else if (status === 'canceled' || status === 'unpaid') {
+    const previousPlanName = user.plan_name || 'Pro';
+    
     await DatabaseService.updateUser(user.id, {
-      stripe_subscription_id: null,
-      stripe_product_id: null,
-      plan_name: null,
+      stripe_subscription_id: undefined,
+      stripe_product_id: undefined,
+      plan_name: undefined,
       subscription_status: status
     });
+
+    // Send subscription expired notification
+    await NotificationService.sendSubscriptionExpiredNotification(
+      notificationContext,
+      { planName: previousPlanName }
+    );
   }
 }
 
@@ -188,4 +234,123 @@ export async function getStripeProducts() {
         ? product.default_price
         : product.default_price?.id
   }));
+}
+
+// New Pro tier management functions
+export async function upgradeUserToPro(userId: string, subscriptionId: string) {
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const plan = subscription.items.data[0]?.plan;
+    
+    if (!plan) {
+      throw new Error('No plan found in subscription');
+    }
+
+    await DatabaseService.updateUser(userId, {
+      stripe_subscription_id: subscriptionId,
+      stripe_product_id: plan.product as string,
+      plan_name: 'Pro',
+      subscription_status: subscription.status,
+      ...(subscription.trial_end && { subscription_trial_end: new Date(subscription.trial_end * 1000).toISOString() })
+    });
+
+    // Track upgrade conversion
+    const user = await DatabaseService.getUser(userId);
+    if (user) {
+      // UsageTracker.trackUpgradeConversion(userId, 'manual_upgrade', 'monthly');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error upgrading user to Pro:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+export async function downgradeUserToFree(userId: string) {
+  try {
+    await DatabaseService.updateUser(userId, {
+      stripe_subscription_id: undefined,
+      stripe_product_id: undefined,
+      plan_name: 'Free',
+      subscription_status: 'canceled'
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error downgrading user to Free:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+export async function cancelSubscription(subscriptionId: string) {
+  try {
+    await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: true
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error canceling subscription:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+export async function reactivateSubscription(subscriptionId: string) {
+  try {
+    await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: false
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error reactivating subscription:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+export async function getSubscriptionDetails(subscriptionId: string) {
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const customer = await stripe.customers.retrieve(subscription.customer as string);
+    
+    return {
+      id: subscription.id,
+      status: subscription.status,
+      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+      cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      trialEnd: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
+      customer: {
+        id: customer.id,
+        email: (customer as any).email,
+        name: (customer as any).name
+      },
+      plan: subscription.items.data[0]?.plan
+    };
+  } catch (error) {
+    console.error('Error getting subscription details:', error);
+    return null;
+  }
+}
+
+export async function createUsageRecord(subscriptionId: string, quantity: number) {
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const subscriptionItem = subscription.items.data[0];
+    
+    if (!subscriptionItem) {
+      throw new Error('No subscription item found');
+    }
+
+    await (stripe.subscriptionItems as any).createUsageRecord(subscriptionItem.id, {
+      quantity: quantity,
+      timestamp: Math.floor(Date.now() / 1000)
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error creating usage record:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
 }

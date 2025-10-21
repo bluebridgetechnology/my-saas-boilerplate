@@ -1,0 +1,1180 @@
+{
+  "app_config": {
+    "name": "ResizeSuite",
+    "tagline": "Professional Image Tools That Work Instantly",
+    "version": "1.0.0",
+    "description": "Premium client-side image processing tools with freemium model",
+    "pricing": {
+      "free": "$0",
+      "pro_monthly": "$9.99",
+      "pro_yearly": "$99.00",
+      "enterprise": "$49.99"
+    },
+    "branding": {
+      "primary_color": "#3B82F6",
+      "secondary_color": "#1E40AF",
+      "accent_color": "#10B981",
+      "neutral_colors": ["#F8FAFC", "#E2E8F0", "#64748B", "#1E293B"]
+    }
+  },
+  "features": {
+    "free": {
+      "upload": {
+        "max_files": 5,
+        "max_size_mb": 10,
+        "supported_formats": ["JPG", "JPEG", "PNG", "WEBP", "GIF", "BMP"],
+        "storage": "session_only",
+        "drag_drop": true,
+        "paste_from_clipboard": true,
+        "url_import": false
+      },
+      "resize": {
+        "methods": {
+          "pixel_dimensions": {
+            "width_input": true,
+            "height_input": true,
+            "maintain_aspect_ratio": true,
+            "constraint_options": ["width", "height", "both"]
+          },
+          "percentage": {
+            "single_value": true,
+            "separate_xy": false,
+            "presets": [25, 50, 75, 150, 200, 300]
+          },
+          "preset_sizes": {
+            "common_web": ["1920x1080", "1280x720", "800x600"],
+            "print": ["300DPI_4x6", "300DPI_8x10"],
+            "mobile": ["375x667", "414x896"]
+          }
+        },
+        "batch_processing": true,
+        "real_time_preview": true,
+        "before_after_comparison": true,
+        "limit": "5 images per session"
+      },
+      "crop_rotate": {
+        "crop_tool": {
+          "visual_selector": true,
+          "drag_handles": true,
+          "grid_overlay": true,
+          "aspect_ratios": {
+            "free": "any_ratio",
+            "square": "1:1",
+            "landscape": ["4:3", "16:9", "3:2"],
+            "portrait": ["3:4", "9:16", "2:3"]
+          },
+          "preset_crops": ["center", "smart_crop"]
+        },
+        "rotation": {
+          "quick_rotate": [90, 180, 270],
+          "custom_angle": false,
+          "straighten_tool": false
+        },
+        "flip": {
+          "horizontal": true,
+          "vertical": true
+        }
+      },
+      "compression": {
+        "quality_slider": {
+          "min": 10,
+          "max": 100,
+          "default": 85,
+          "step": 5
+        },
+        "real_time_preview": {
+          "file_size_display": true,
+          "quality_comparison": true,
+          "zoom_preview": false
+        },
+        "format_optimization": {
+          "auto_optimize": true,
+          "progressive_jpeg": false,
+          "lossless_png": true
+        },
+        "batch_compression": true
+      },
+      "format_conversion": {
+        "supported_outputs": ["JPG", "PNG", "WEBP"],
+        "quality_per_format": {
+          "jpg": {"min": 10, "max": 100},
+          "png": {"compression_level": "auto"},
+          "webp": {"min": 10, "max": 100}
+        },
+        "transparency_handling": {
+          "preserve": true,
+          "background_color_option": true,
+          "auto_detect": true
+        },
+        "metadata_options": {
+          "preserve_exif": false,
+          "strip_metadata": true
+        }
+      },
+      "social_media_presets": {
+        "platforms": {
+          "instagram": {
+            "story": {"width": 1080, "height": 1920, "name": "Instagram Story"},
+            "post": {"width": 1080, "height": 1080, "name": "Instagram Post"},
+            "profile": {"width": 400, "height": 400, "name": "Profile Picture"}
+          },
+          "youtube": {
+            "thumbnail": {"width": 1280, "height": 720, "name": "YouTube Thumbnail"},
+            "banner": {"width": 2560, "height": 1440, "name": "Channel Banner"},
+            "profile": {"width": 800, "height": 800, "name": "Profile Picture"}
+          },
+          "linkedin": {
+            "post": {"width": 1200, "height": 627, "name": "LinkedIn Post"},
+            "banner": {"width": 1584, "height": 396, "name": "Profile Banner"},
+            "profile": {"width": 400, "height": 400, "name": "Profile Picture"}
+          }
+        },
+        "limit_per_platform": 3,
+        "auto_crop_options": ["center", "smart", "top", "bottom"],
+        "preview_overlay": true
+      },
+      "meme_generator": {
+        "text_areas": {
+          "top_text": true,
+          "bottom_text": true,
+          "custom_position": false
+        },
+        "fonts": {
+          "available": ["Impact", "Arial", "Comic Sans MS"],
+          "default": "Impact",
+          "size_range": {"min": 16, "max": 72}
+        },
+        "styling": {
+          "text_color": true,
+          "outline": {"enabled": true, "colors": ["white", "black"], "width": [1, 2, 3]},
+          "shadow": {"enabled": true, "colors": ["black", "gray"], "offset": [1, 2, 3]},
+          "background": {"enabled": true, "opacity": [0.3, 0.5, 0.7]}
+        },
+        "presets": {
+          "classic_meme": "top_bottom_impact_white_black_outline",
+          "modern_style": "custom_fonts_colors"
+        },
+        "text_limits": {
+          "max_characters": 50,
+          "max_lines": 3
+        }
+      },
+      "color_picker": {
+        "extraction_methods": {
+          "click_to_pick": true,
+          "dominant_colors": {"count": 5, "algorithm": "k_means"},
+          "color_palette": true,
+          "average_color": true
+        },
+        "output_formats": {
+          "hex": true,
+          "rgb": true,
+          "hsl": true,
+          "cmyk": false
+        },
+        "features": {
+          "clipboard_copy": true,
+          "color_history": {"session_only": true, "max_colors": 20},
+          "export_palette": false,
+          "magnifier_tool": false
+        }
+      },
+      "download": {
+        "type": "individual_files",
+        "formats": ["original", "processed"],
+        "naming": "original_filename_suffix",
+        "batch_download": false,
+        "quality_confirmation": true
+      }
+    },
+    "pro": {
+      "upload": {
+        "max_files": 100,
+        "max_size_mb": 50,
+        "supported_formats": ["JPG", "JPEG", "PNG", "WEBP", "GIF", "BMP", "TIFF", "SVG", "PDF"],
+        "storage": "persistent_projects",
+        "drag_drop": true,
+        "paste_from_clipboard": true,
+        "url_import": true,
+        "folder_upload": true,
+        "priority_processing": true
+      },
+      "bulk_operations": {
+        "batch_settings": {
+          "apply_to_all": true,
+          "selective_application": true,
+          "queue_management": true,
+          "progress_tracking": true
+        },
+        "custom_naming": {
+          "patterns": {
+            "sequential": "image_001, image_002...",
+            "date_stamp": "IMG_20240327_143022",
+            "custom_prefix": "prefix_originalname",
+            "custom_suffix": "originalname_suffix",
+            "find_replace": true,
+            "case_conversion": ["lowercase", "uppercase", "title_case"]
+          },
+          "variables": ["date", "time", "counter", "original_name", "dimensions", "format"],
+          "preview": true,
+          "validation": true
+        },
+        "folder_organization": {
+          "auto_folders": true,
+          "by_format": true,
+          "by_size": true,
+          "custom_structure": true
+        },
+        "zip_download": {
+          "all_processed": true,
+          "selected_images": true,
+          "organized_folders": true,
+          "compression_level": "balanced",
+          "progress_indicator": true,
+          "email_notification": false
+        }
+      },
+      "social_presets_unlimited": {
+        "all_platforms": {
+          "facebook": {
+            "post": {"width": 1200, "height": 630},
+            "story": {"width": 1080, "height": 1920},
+            "cover": {"width": 1640, "height": 859},
+            "profile": {"width": 400, "height": 400}
+          },
+          "twitter": {
+            "post": {"width": 1200, "height": 675},
+            "header": {"width": 1500, "height": 500},
+            "profile": {"width": 400, "height": 400}
+          },
+          "tiktok": {
+            "video": {"width": 1080, "height": 1920},
+            "profile": {"width": 200, "height": 200}
+          },
+          "pinterest": {
+            "pin": {"width": 1000, "height": 1500},
+            "board_cover": {"width": 600, "height": 600}
+          }
+        },
+        "custom_presets": {
+          "create": true,
+          "save": true,
+          "organize": true,
+          "share": true,
+          "import_export": true
+        },
+        "responsive_sets": {
+          "generate_multiple_sizes": true,
+          "device_targets": ["desktop", "tablet", "mobile"],
+          "retina_versions": true,
+          "webp_fallbacks": true
+        },
+        "smart_cropping": {
+          "face_detection": true,
+          "object_detection": true,
+          "rule_of_thirds": true,
+          "attention_based": true
+        }
+      },
+      "watermark_logo_overlay": {
+        "types": {
+          "text": {
+            "fonts": "system_fonts_plus_google_fonts",
+            "styling": ["bold", "italic", "outline", "shadow"],
+            "effects": ["gradient", "pattern", "texture"]
+          },
+          "image": {
+            "upload_custom": true,
+            "supported_formats": ["PNG", "SVG", "JPG"],
+            "transparency_support": true
+          },
+          "logo": {
+            "predefined_shapes": ["circle", "square", "shield"],
+            "text_logo_generator": true
+          }
+        },
+        "positioning": {
+          "presets": {
+            "corners": ["top_left", "top_right", "bottom_left", "bottom_right"],
+            "edges": ["top_center", "bottom_center", "left_center", "right_center"],
+            "center": true
+          },
+          "custom_coordinates": {
+            "pixel_precise": true,
+            "percentage_based": true,
+            "relative_to_content": true
+          },
+          "multiple_watermarks": true,
+          "margin_controls": true
+        },
+        "styling": {
+          "opacity": {"min": 1, "max": 100, "step": 1},
+          "blend_modes": ["normal", "multiply", "screen", "overlay", "soft_light", "hard_light"],
+          "sizing": {
+            "auto": "scale_to_image",
+            "percentage": {"min": 1, "max": 100},
+            "fixed_pixels": true,
+            "maintain_aspect": true
+          },
+          "rotation": {"degrees": true, "snap_angles": [0, 45, 90, 135, 180]},
+          "effects": ["drop_shadow", "glow", "bevel"]
+        },
+        "batch_application": {
+          "same_watermark_all": true,
+          "position_relative": true,
+          "size_relative": true,
+          "preview_before_apply": true
+        }
+      },
+      "advanced_compression": {
+        "algorithms": {
+          "lossless_optimization": true,
+          "progressive_jpeg": true,
+          "mozjpeg": true,
+          "pngquant": true,
+          "webp_advanced": true
+        },
+        "metadata_options": {
+          "strip_all": true,
+          "preserve_essential": ["copyright", "author", "description"],
+          "preserve_color_profile": true,
+          "custom_selection": true
+        },
+        "size_targets": {
+          "target_file_size": true,
+          "quality_constraint": true,
+          "dimension_constraint": true
+        },
+        "batch_optimization": {
+          "different_settings_per_image": true,
+          "smart_optimization": "auto_detect_best_settings"
+        }
+      },
+      "project_management": {
+        "save_projects": {
+          "auto_save": true,
+          "manual_save": true,
+          "save_templates": true,
+          "version_history": false
+        },
+        "load_projects": {
+          "recent_projects": {"limit": 10},
+          "search_projects": true,
+          "filter_by_date": true,
+          "filter_by_type": true
+        },
+        "project_history": {
+          "thumbnails": true,
+          "settings_preview": true,
+          "date_organized": true,
+          "storage_limit": "50_projects",
+          "backup_export": true
+        },
+        "sharing": {
+          "share_links": true,
+          "expiration_dates": true,
+          "password_protection": false,
+          "collaboration": false,
+          "embed_codes": false
+        },
+        "export_import": {
+          "settings_json": true,
+          "project_templates": true,
+          "bulk_import": true
+        }
+      },
+      "advanced_formats": {
+        "input_support": {
+          "tiff": {"multi_page": true, "compression": "all_types"},
+          "svg": {"rasterize": true, "preserve_vector": false},
+          "pdf": {"page_selection": true, "dpi_settings": true},
+          "raw_formats": false
+        },
+        "output_support": {
+          "tiff": {"compression_options": ["none", "lzw", "zip"], "bit_depth": [8, 16]},
+          "svg": {"vector_export": false, "embed_images": true},
+          "pdf": {"page_size": "custom", "dpi": [72, 150, 300], "compression": true}
+        },
+        "conversion_matrix": "all_supported_formats_to_all_outputs"
+      },
+      "api_access": {
+        "rest_api": {
+          "endpoints": ["upload", "process", "download", "status"],
+          "authentication": "api_key",
+          "rate_limiting": "1000_requests_per_hour",
+          "webhook_support": true
+        },
+        "usage_analytics": {
+          "request_tracking": true,
+          "error_logging": true,
+          "performance_metrics": true,
+          "usage_reports": "monthly"
+        },
+        "documentation": {
+          "interactive_docs": true,
+          "code_examples": ["javascript", "python", "curl"],
+          "postman_collection": true
+        }
+      }
+    }
+  },
+  "ui_components": {
+    "landing_page": {
+      "hero": {
+        "headline": "Professional Image Tools That Work Instantly",
+        "subheadline": "Resize, compress, and optimize images without uploading to servers. 100% private, instant results.",
+        "primary_cta": {
+          "text": "Start Resizing Free",
+          "action": "scroll_to_tools",
+          "style": "prominent_button"
+        },
+        "secondary_cta": {
+          "text": "View Pro Features",
+          "action": "scroll_to_pricing",
+          "style": "outline_button"
+        },
+        "trust_indicators": {
+          "badges": ["100% Private", "No Server Upload", "Instant Results", "500K+ Users"],
+          "social_proof": "testimonial_carousel",
+          "security_mentions": true
+        },
+        "background": {
+          "style": "gradient_with_geometric_shapes",
+          "animation": "subtle_floating_elements"
+        }
+      },
+      "free_tools_section": {
+        "layout": "above_the_fold",
+        "upload_area": {
+          "type": "drag_drop_zone",
+          "multiple_files": true,
+          "paste_support": true,
+          "file_preview": "thumbnail_grid",
+          "progress_indicators": "individual_progress_bars"
+        },
+        "tool_tabs": {
+          "tabs": ["Resize", "Crop", "Compress", "Convert", "Social", "Meme", "Color"],
+          "style": "modern_tab_interface",
+          "active_state": "highlighted_with_icon",
+          "responsive": "horizontal_scroll_mobile"
+        },
+        "live_preview": {
+          "before_after": "side_by_side_comparison",
+          "zoom_functionality": false,
+          "full_screen_preview": false
+        },
+        "processing_states": {
+          "upload": "animated_progress_bar",
+          "processing": "spinner_with_status",
+          "complete": "checkmark_animation",
+          "error": "error_icon_with_message"
+        }
+      },
+      "feature_comparison": {
+        "layout": "three_column_table",
+        "columns": ["Feature", "Free", "Pro"],
+        "visual_style": {
+          "free_column": "basic_styling",
+          "pro_column": "highlighted_premium",
+          "checkmarks": "green_checkmarks",
+          "x_marks": "gray_x_or_dash",
+          "upgrade_cta": "prominent_blue_button"
+        },
+        "features_listed": [
+          "Images per batch",
+          "File size limit",
+          "Advanced formats",
+          "Watermarks",
+          "ZIP download",
+          "Project saving",
+          "Priority processing",
+          "API access"
+        ],
+        "sticky_header": true,
+        "mobile_responsive": "accordion_style"
+      },
+      "pricing_section": {
+        "title": "Choose Your Plan",
+        "subtitle": "Start free, upgrade when you need more power",
+        "cards": {
+          "free": {
+            "highlighted": false,
+            "price": "$0",
+            "billing": "Forever",
+            "features": "essential_features_list",
+            "cta": "Start Free"
+          },
+          "pro": {
+            "highlighted": true,
+            "badge": "Most Popular",
+            "price": "$9.99",
+            "billing": "per month",
+            "annual_discount": "Save 20% annually",
+            "features": "all_features_list",
+            "cta": "Upgrade to Pro"
+          }
+        }
+      },
+      "social_proof": {
+        "usage_stats": {
+          "counter_animation": true,
+          "stats": ["500K+ Images Processed", "50K+ Happy Users", "99.9% Uptime"],
+          "real_time": false
+        },
+        "testimonials": {
+          "carousel": true,
+          "auto_play": true,
+          "user_avatars": "placeholder_avatars",
+          "star_ratings": true
+        },
+        "trust_badges": {
+          "security": ["GDPR Compliant", "No Data Storage"],
+          "performance": ["Lightning Fast", "Always Available"]
+        }
+      },
+      "footer": {
+        "links": {
+          "product": ["Features", "Pricing", "API"],
+          "company": ["About", "Blog", "Contact"],
+          "legal": ["Privacy Policy", "Terms of Service", "GDPR"]
+        },
+        "social_media": ["twitter", "linkedin", "github"],
+        "newsletter_signup": true,
+        "copyright": "dynamic_year"
+      }
+    },
+    "user_area": {
+      "layout": "dashboard_style",
+      "header": {
+        "logo": true,
+        "navigation": ["Dashboard", "Tools", "Projects", "Settings"],
+        "user_menu": {
+          "avatar": true,
+          "dropdown": ["Profile", "Billing", "Settings", "Logout"]
+        },
+        "usage_stats": {
+          "current_month": "images_processed",
+          "plan_limits": "visual_progress_bar"
+        },
+        "upgrade_cta": {
+          "visibility": "free_users_only",
+          "style": "prominent_but_not_intrusive"
+        }
+      },
+      "workspace": {
+        "main_area": "enhanced_tool_interface",
+        "sidebar": {
+          "recent_projects": true,
+          "quick_presets": true,
+          "usage_summary": true
+        },
+        "bulk_operations": {
+          "panel_position": "bottom_expandable",
+          "batch_controls": true,
+          "progress_tracking": true,
+          "queue_management": true
+        }
+      },
+      "pro_features_ui": {
+        "advanced_upload": {
+          "multiple_zones": true,
+          "folder_structure": true,
+          "file_organization": true
+        },
+        "batch_toolbar": {
+          "apply_to_all": true,
+          "selective_operations": true,
+          "preview_changes": true
+        },
+        "watermark_editor": {
+          "style": "wysiwyg_interface",
+          "live_preview": true,
+          "template_library": true
+        },
+        "project_manager": {
+          "grid_view": true,
+          "list_view": true,
+          "search_filter": true,
+          "bulk_actions": true
+        }
+      }
+    },
+    "admin_area": {
+      "access_control": "super_admin_only",
+      "layout": "admin_dashboard",
+      "analytics_dashboard": {
+        "overview_cards": {
+          "total_uploads": "counter_with_trend",
+          "active_users": "free_vs_pro_breakdown",
+          "revenue": "mrr_with_growth_rate",
+          "conversion_rate": "percentage_with_trend"
+        },
+        "charts": {
+          "usage_trends": "line_chart_over_time",
+          "feature_popularity": "bar_chart",
+          "conversion_funnel": "funnel_visualization",
+          "geographic_distribution": "world_map"
+        },
+        "real_time_activity": {
+          "live_uploads": true,
+          "active_sessions": true,
+          "error_monitoring": true
+        },
+        "time_periods": ["today", "week", "month", "quarter", "year"]
+      },
+      "user_management": {
+        "user_list": "searchable_paginated_table",
+        "user_details": "modal_or_side_panel",
+        "actions": ["view", "edit", "suspend", "delete", "refund"],
+        "bulk_operations": true,
+        "export_data": "csv_json_formats"
+      },
+      "configuration": {
+        "feature_flags": {
+          "toggle_interface": true,
+          "rollout_percentage": true,
+          "user_group_targeting": true
+        },
+        "pricing_management": {
+          "plan_configuration": true,
+          "discount_codes": true,
+          "billing_settings": true
+        },
+        "branding": {
+          "logo_upload": true,
+          "color_customization": true,
+          "custom_messaging": true,
+          "white_label_options": false
+        },
+        "system_settings": {
+          "performance_tuning": true,
+          "maintenance_mode": true,
+          "backup_configuration": true
+        }
+      }
+    }
+  },
+  "conversion_strategy": {
+    "upgrade_triggers": {
+      "file_limit_reached": {
+        "trigger_point": "5th_image_upload_attempt",
+        "message": "Need to process more images? Upgrade to Pro for batches up to 100 images",
+        "design": "non_blocking_overlay",
+        "actions": {
+          "primary": "Upgrade Now",
+          "secondary": "Continue Free",
+          "tertiary": "Learn More"
+        },
+        "urgency": "limited_time_discount",
+        "social_proof": "X users upgraded today"
+      },
+      "social_preset_limit": {
+        "trigger_point": "4th_preset_usage_per_platform",
+        "message": "Unlock unlimited social media presets and custom sizes",
+        "preview": "show_locked_presets_ghosted",
+        "value_highlight": "50+ additional presets available"
+      },
+      "advanced_feature_access": {
+        "design": "ghosted_buttons_with_tooltips",
+        "hover_message": "Available in Pro - Upgrade to unlock",
+        "click_behavior": "open_upgrade_modal",
+        "features_to_highlight": ["watermarks", "zip_download", "advanced_formats", "project_saving"]
+      },
+      "download_limit": {
+        "trigger_point": "individual_downloads_only",
+        "message": "Save time with ZIP downloads of all your processed images",
+        "demonstration": "show_zip_download_in_action"
+      }
+    },
+    "upgrade_flow": {
+      "entry_points": ["limit_reached", "feature_click", "pricing_table", "header_cta"],
+      "flow_steps": [
+        "trigger_event",
+        "value_proposition",
+        "plan_selection",
+        "payment_processing",
+        "account_upgrade",
+        "feature_unlock",
+        "success_confirmation"
+      ],
+      "seamless_transition": {
+        "preserve_current_work": true,
+        "maintain_session": true,
+        "instant_feature_access": true
+      },
+      "payment_integration": "stripe",
+      "success_actions": {
+        "redirect": "enhanced_workspace",
+        "welcome_tour": "new_features_highlight",
+        "first_use_guidance": true
+      },
+      "abandonment_recovery": {
+        "exit_intent": "last_chance_offer",
+        "email_follow_up": "feature_reminder_sequence",
+        "retargeting": "highlight_missed_features"
+      }
+    },
+    "retention_strategy": {
+      "onboarding": {
+        "progressive_disclosure": "introduce_features_gradually",
+        "quick_wins": "immediate_value_demonstration",
+        "tutorial_overlay": "contextual_tips"
+      },
+      "engagement": {
+        "usage_insights": "show_time_saved_statistics",
+        "feature_discovery": "suggest_unused_features",
+        "success_celebrations": "milestone_achievements"
+      },
+      "win_back": {
+        "inactive_user_emails": true,
+        "special_offers": "reactivation_discounts",
+        "feature_updates": "new_feature_announcements"
+      }
+    }
+  },
+  "technical_specifications": {
+    "performance_requirements": {
+      "image_processing": {
+        "max_time_per_image": "3_seconds",
+        "batch_processing": "parallel_web_workers",
+        "memory_efficient": "canvas_recycling",
+        "progress_reporting": "real_time_updates"
+      },
+      "ui_responsiveness": {
+        "no_blocking_operations": true,
+        "smooth_animations": "60fps_target",
+        "lazy_loading": "images_and_components",
+        "skeleton_loading": "perceived_performance"
+      },
+      "memory_management": {
+        "max_concurrent_images": 10,
+        "garbage_collection": "explicit_cleanup",
+        "canvas_limits": "browser_specific_handling",
+        "error_recovery": "graceful_degradation"
+      }
+    },
+    "browser_compatibility": {
+      "modern_browsers": {
+        "chrome": "90+",
+        "firefox": "88+",
+        "safari": "14+",
+        "edge": "90+"
+      },
+      "required_features": [
+        "FileReader_API",
+        "HTML5_Canvas",
+        "Web_Workers",
+        "Blob_URLs",
+        "Async_Await"
+      ],
+      "fallback_strategy": {
+        "feature_detection": true,
+        "progressive_enhancement": true,
+        "clear_error_messages": true
+      },
+      "mobile_support": {
+        "ios_safari": "14+",
+        "chrome_mobile": "90+",
+        "touch_optimized": true,
+        "responsive_design": true
+      }
+    },
+    "client_side_processing": {
+      "image_processing_pipeline": {
+        "input_validation": "file_type_size_checks",
+        "canvas_operations": {
+          "resize": "drawImage_with_scaling",
+          "crop": "getImageData_manipulation",
+          "compress": "toBlob_quality_adjustment",
+          "convert": "canvas_to_different_formats",
+          "watermark": "composite_operations",
+          "effects": "pixel_manipulation"
+        },
+        "batch_processing": {
+          "web_workers": "parallel_processing",
+          "queue_management": "priority_based",
+          "memory_optimization": "streaming_processing"
+        },
+        "output_generation": {
+          "blob_creation": "optimized_format_output",
+          "download_links": "object_url_creation",
+          "zip_generation": "jszip_library"
+        }
+      },
+      "file_handling": {
+        "input_methods": ["file_input", "drag_drop", "paste", "url_fetch"],
+        "validation": {
+          "file_size": "client_side_checking",
+          "file_type": "mime_type_validation",
+          "image_integrity": "load_validation"
+        },
+        "processing_states": {
+          "queued": "waiting_for_processing",
+          "processing": "active_manipulation",
+          "complete": "ready_for_download",
+          "error": "processing_failed"
+        }
+      },
+      "libraries_and_apis": {
+        "core": ["FileReader", "Canvas2D", "Blob"],
+        "third_party": ["JSZip", "FileSaver"],
+        "web_apis": ["Web_Workers", "Intersection_Observer", "Clipboard_API"]
+      }
+    },
+    "data_architecture": {
+      "session_storage": {
+        "free_users": {
+          "storage_type": "browser_session_storage",
+          "data_persistence": "session_only",
+          "stored_data": [
+            "uploaded_images_as_blob_urls",
+            "processing_settings",
+            "session_history",
+            "user_preferences"
+          ],
+          "cleanup": "automatic_on_session_end"
+        }
+      },
+      "persistent_storage": {
+        "pro_users": {
+          "database": "supabase_postgresql",
+          "authentication": "supabase",
+          "tables": {
+            "users": {
+              "fields": ["id", "email", "plan", "created_at", "updated_at"],
+              "indexes": ["user_id", "email", "plan"]
+            },
+            "projects": {
+              "fields": ["id", "user_id", "name", "settings_json", "thumbnail_url", "created_at", "updated_at"],
+              "indexes": ["user_id", "created_at"],
+              "relationships": "belongs_to_user"
+            },
+            "project_images": {
+              "fields": ["id", "project_id", "original_name", "processed_settings", "file_size", "dimensions"],
+              "relationships": "belongs_to_project"
+            },
+            "usage_stats": {
+              "fields": ["user_id", "feature", "count", "date", "file_sizes_total"],
+              "aggregation": "daily_rollup"
+            }
+          },
+          "storage": {
+            "user_uploads": "supabase_storage_bucket",
+            "processed_images": "temporary_signed_urls",
+            "project_thumbnails": "persistent_storage"
+          }
+        }
+      },
+      "caching_strategy": {
+        "processed_images": "browser_cache_with_expiry",
+        "user_preferences": "local_storage",
+        "project_thumbnails": "service_worker_cache"
+      }
+    },
+    "security_and_privacy": {
+      "data_protection": {
+        "no_server_image_storage": "client_side_processing_only",
+        "temporary_storage": "automatic_cleanup",
+        "gdpr_compliance": "minimal_data_collection"
+      },
+      "authentication": {
+        "provider": "supabase",
+        "methods": ["email_password", "google_oauth", "magic_links"],
+        "session_management": "secure_jwt_tokens",
+        "password_requirements": "strong_password_policy"
+      },
+      "payment_security": {
+        "provider": "stripe",
+        "pci_compliance": "stripe_handles_card_data",
+        "webhook_verification": "signature_validation"
+      },
+      "api_security": {
+        "authentication": "api_key_based",
+        "rate_limiting": "user_based_throttling",
+        "input_validation": "comprehensive_sanitization"
+      }
+    }
+  },
+  "error_handling": {
+    "file_upload_errors": {
+      "file_too_large": {
+        "free_users": "File exceeds 10MB limit. Upgrade to Pro for files up to 50MB.",
+        "pro_users": "File exceeds 50MB limit. Please use a smaller file.",
+        "action": "show_compression_suggestion"
+      },
+      "unsupported_format": {
+        "message": "Format not supported. Please use: JPG, PNG, WEBP, GIF, or BMP.",
+        "action": "show_supported_formats_list",
+        "conversion_suggestion": true
+      },
+      "corrupted_file": {
+        "message": "This image file appears to be corrupted and cannot be processed.",
+        "action": "suggest_different_file"
+      },
+      "network_error": {
+        "message": "Upload failed due to network issues. Please check your connection and try again.",
+        "action": "retry_button"
+      }
+    },
+    "processing_errors": {
+      "memory_limit": {
+        "message": "Image too large to process. Try reducing the file size first.",
+        "action": "suggest_compression_first"
+      },
+      "canvas_limit": {
+        "message": "Image dimensions exceed browser limits. Maximum size is 32767x32767 pixels.",
+        "action": "suggest_resize_first"
+      },
+      "processing_timeout": {
+        "message": "Processing is taking longer than expected. Please try again.",
+        "action": "retry_with_lower_quality"
+      },
+      "format_conversion_error": {
+        "message": "Unable to convert to selected format. Please try a different output format.",
+        "action": "suggest_alternative_formats"
+      }
+    },
+    "user_feedback_system": {
+      "success_messages": {
+        "processing_complete": "✅ Images processed successfully!",
+        "download_ready": "📥 Your files are ready for download.",
+        "project_saved": "💾 Project saved successfully.",
+        "upgrade_successful": "🎉 Welcome to ResizeSuite Pro!"
+      },
+      "warning_messages": {
+        "approaching_limit": "⚠️ You're approaching your free tier limit (4/5 images).",
+        "quality_loss": "⚠️ This compression level may result in visible quality loss.",
+        "large_batch_processing": "⏳ Processing large batches may take several minutes."
+      },
+      "progress_indicators": {
+        "upload": "animated_progress_bar_with_percentage",
+        "processing": "spinner_with_current_operation",
+        "batch_processing": "overall_progress_plus_current_image",
+        "download_preparation": "zip_creation_progress"
+      }
+    },
+    "fallback_strategies": {
+      "canvas_not_supported": {
+        "message": "Your browser doesn't support advanced image processing.",
+        "fallback": "basic_resize_only_mode"
+      },
+      "web_workers_unavailable": {
+        "fallback": "main_thread_processing_with_warnings",
+        "performance_notice": "Processing may be slower on this device."
+      },
+      "file_api_not_supported": {
+        "message": "Your browser is too old to use ResizeSuite.",
+        "suggestion": "upgrade_browser_recommendation"
+      }
+    }
+  },
+  "analytics_and_tracking": {
+    "key_metrics": {
+      "user_acquisition": {
+        "new_signups": "daily_weekly_monthly",
+        "traffic_sources": "organic_paid_referral_direct",
+        "landing_page_conversion": "visitors_to_tool_usage"
+      },
+      "user_engagement": {
+        "session_duration": "average_and_distribution",
+        "images_processed": "per_user_per_session",
+        "feature_adoption": "which_tools_used_most",
+        "return_usage": "daily_weekly_monthly_active_users"
+      },
+      "conversion_optimization": {
+        "free_to_pro_conversion": "percentage_and_time_to_convert",
+        "upgrade_trigger_effectiveness": "which_limits_drive_upgrades",
+        "funnel_analysis": "step_by_step_drop_off_rates",
+        "pricing_page_performance": "views_to_upgrades"
+      },
+      "technical_performance": {
+        "processing_times": "average_by_operation_and_file_size",
+        "error_rates": "by_browser_and_operation_type",
+        "page_load_times": "core_web_vitals_tracking",
+        "mobile_vs_desktop": "usage_patterns_and_performance"
+      },
+      "business_metrics": {
+        "monthly_recurring_revenue": "growth_trends",
+        "customer_lifetime_value": "by_acquisition_channel",
+        "churn_rate": "voluntary_vs_payment_failures",
+        "support_ticket_volume": "by_category_and_resolution_time"
+      }
+    },
+    "tracking_implementation": {
+      "event_tracking": {
+        "user_actions": [
+          "image_uploaded",
+          "tool_selected",
+          "processing_completed",
+          "download_initiated",
+          "upgrade_clicked",
+          "limit_reached"
+        ],
+        "custom_properties": {
+          "file_size": "kb",
+          "processing_time": "seconds", 
+          "output_format": "string",
+          "user_plan": "free_or_pro",
+          "session_id": "tracking_user_journey"
+        }
+      },
+      "conversion_events": {
+        "trial_started": "free_tool_first_use",
+        "upgrade_intent": "upgrade_button_clicked",
+        "payment_initiated": "stripe_checkout_started",
+        "payment_completed": "successful_subscription",
+        "subscription_cancelled": "cancellation_reason"
+      },
+      "performance_monitoring": {
+        "real_user_monitoring": "core_web_vitals",
+        "error_tracking": "javascript_errors_and_processing_failures",
+        "api_performance": "response_times_and_success_rates"
+      }
+    },
+    "reporting_dashboards": {
+      "executive_dashboard": {
+        "kpis": ["MRR", "conversion_rate", "active_users", "churn_rate"],
+        "update_frequency": "real_time",
+        "alerts": "threshold_based_notifications"
+      },
+      "product_dashboard": {
+        "feature_usage": "heatmaps_and_usage_statistics",
+        "user_journey": "funnel_visualization",
+        "performance_metrics": "processing_times_and_errors"
+      },
+      "marketing_dashboard": {
+        "acquisition_channels": "cost_per_acquisition_by_source",
+        "conversion_optimization": "a_b_test_results",
+        "content_performance": "blog_and_landing_page_metrics"
+      }
+    }
+  },
+  "launch_strategy": {
+    "development_phases": {
+      "mvp": {
+        "timeline": "8_weeks",
+        "core_features": [
+          "landing_page_with_hero_and_free_tools",
+          "all_free_tier_functionality",
+          "basic_pro_tier_with_authentication",
+          "stripe_payment_integration",
+          "responsive_design_mobile_desktop",
+          "basic_analytics_implementation",
+          "error_handling_and_user_feedback"
+        ],
+        "success_criteria": {
+          "functional": "all_free_tools_working_perfectly",
+          "performance": "under_3_second_processing_times",
+          "conversion": "upgrade_flow_functional",
+          "quality": "no_critical_bugs_smooth_ux"
+        }
+      },
+      "post_mvp": {
+        "timeline": "4_weeks_after_mvp",
+        "advanced_features": [
+          "advanced_pro_features_watermarking_projects",
+          "comprehensive_admin_dashboard",
+          "api_development_and_documentation",
+          "enhanced_analytics_and_reporting",
+          "performance_optimizations",
+          "a_b_testing_implementation"
+        ],
+        "growth_features": [
+          "referral_program",
+          "social_sharing_integration",
+          "content_marketing_blog",
+          "seo_optimization",
+          "email_marketing_automation"
+        ]
+      }
+    },
+    "quality_assurance": {
+      "testing_requirements": {
+        "cross_browser_testing": {
+          "browsers": ["Chrome", "Firefox", "Safari", "Edge"],
+          "versions": "last_3_major_versions",
+          "mobile_browsers": ["iOS_Safari", "Chrome_Mobile"]
+        },
+        "device_testing": {
+          "desktop": ["Windows", "macOS", "Linux"],
+          "mobile": ["iPhone", "Android"],
+          "tablets": ["iPad", "Android_tablets"]
+        },
+        "performance_testing": {
+          "load_testing": "100_concurrent_users",
+          "stress_testing": "maximum_file_size_limits",
+          "memory_testing": "prolonged_usage_sessions"
+        },
+        "security_testing": {
+          "authentication_flow": "penetration_testing",
+          "payment_integration": "security_audit",
+          "api_endpoints": "vulnerability_scanning"
+        }
+      },
+      "user_acceptance_testing": {
+        "beta_user_group": "50_power_users",
+        "feedback_collection": "structured_feedback_forms",
+        "usability_testing": "task_completion_rates",
+        "accessibility_testing": "wcag_compliance_audit"
+      }
+    },
+    "go_to_market": {
+      "launch_sequence": {
+        "soft_launch": {
+          "audience": "beta_users_and_early_adopters",
+          "duration": "2_weeks",
+          "goals": ["bug_identification", "performance_validation", "initial_feedback"]
+        },
+        "public_launch": {
+          "marketing_channels": ["Product_Hunt", "social_media", "content_marketing"],
+          "pr_strategy": "press_release_and_media_outreach",
+          "influencer_outreach": "design_and_productivity_communities"
+        }
+      },
+      "success_metrics": {
+        "week_1": {
+          "target_users": 1000,
+          "conversion_rate": "2%",
+          "technical_uptime": "99.9%"
+        },
+        "month_1": {
+          "target_users": 10000,
+          "monthly_recurring_revenue": "$500",
+          "user_retention": "30%_weekly_retention"
+        },
+        "month_3": {
+          "target_users": 50000,
+          "monthly_recurring_revenue": "$5000",
+          "market_feedback": "positive_user_reviews_and_testimonials"
+        }
+      }
+    }
+  },
+  "maintenance_and_scaling": {
+    "ongoing_development": {
+      "feature_roadmap": {
+        "quarter_1": ["api_enhancements", "mobile_app", "team_collaboration"],
+        "quarter_2": ["ai_powered_features", "advanced_editing", "white_label_solution"],
+        "quarter_3": ["enterprise_features", "integrations", "advanced_analytics"],
+        "quarter_4": ["machine_learning", "automation", "platform_expansion"]
+      },
+      "technical_debt": {
+        "code_refactoring": "quarterly_code_review_and_optimization",
+        "dependency_updates": "monthly_security_and_feature_updates",
+        "performance_monitoring": "continuous_optimization"
+      }
+    },
+    "scaling_considerations": {
+      "infrastructure": {
+        "cdn": "global_content_delivery",
+        "database_optimization": "query_optimization_and_indexing",
+        "monitoring": "comprehensive_application_monitoring"
+      },
+      "team_scaling": {
+        "development_team": "frontend_backend_devops_specialists",
+        "customer_support": "dedicated_support_team",
+        "marketing_team": "growth_marketing_specialists"
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ import {
   UserMinus,
   type LucideIcon,
 } from 'lucide-react';
-import { ActivityType } from '@/app/(login)/actions';
+import { ActivityType } from '@/lib/types/activity';
 import { DatabaseService } from '@/lib/supabase/database';
 import { getUser } from '@/lib/auth/supabase';
 
@@ -89,7 +89,7 @@ export default async function ActivityPage() {
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900">
                         {formattedAction}
-                        {log.ipAddress && ` from IP ${log.ipAddress}`}
+                        {log.ip_address && ` from IP ${log.ip_address}`}
                       </p>
                       <p className="text-xs text-gray-500">
                         {getRelativeTime(new Date(log.timestamp))}

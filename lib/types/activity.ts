@@ -1,0 +1,9 @@
+// Activity types
+export enum ActivityType {
+  SIGN_UP = 'SIGN_UP',
+  SIGN_IN = 'SIGN_IN',
+  SIGN_OUT = 'SIGN_OUT',
+  UPDATE_PASSWORD = 'UPDATE_PASSWORD',
+  DELETE_ACCOUNT = 'DELETE_ACCOUNT',
+  UPDATE_ACCOUNT = 'UPDATE_ACCOUNT',
+}

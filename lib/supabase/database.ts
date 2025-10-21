@@ -21,11 +21,18 @@ export interface User {
   id: string;
   email: string;
   name?: string;
+  avatar_url?: string;
   stripe_customer_id?: string;
   stripe_subscription_id?: string;
   stripe_product_id?: string;
   plan_name?: string;
   subscription_status?: string;
+  subscription_expires_at?: string;
+  role?: string;
+  is_admin?: boolean;
+  admin_permissions?: string[];
+  last_login?: string;
+  login_count?: number;
   created_at: string;
   updated_at: string;
 }
