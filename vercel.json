@@ -4,5 +4,13 @@
       "path": "/api/cron/check-subscriptions",
       "schedule": "0 9 * * *"
     }
-  ]
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "functions": {
+    "app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

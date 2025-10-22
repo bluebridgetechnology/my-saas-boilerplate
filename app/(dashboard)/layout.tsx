@@ -31,9 +31,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User } from '@/lib/supabase/database';
+import { User } from '@/lib/types/database';
 import useSWR from 'swr';
-import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
 import { SWRConfig } from 'swr';
 
@@ -324,8 +323,22 @@ function NavUser() {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await signOut();
-    router.push('/');
+    try {
+      const response = await fetch('/api/auth/signout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.ok) {
+        router.push('/');
+      } else {
+        console.error('Failed to sign out');
+      }
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   if (!user) {

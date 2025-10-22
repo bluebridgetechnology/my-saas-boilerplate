@@ -9,8 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { customerPortalAction } from '@/lib/payments/actions';
-import { User } from '@/lib/supabase/database';
+import SubscriptionCard from './subscription-card';
+import { User } from '@/lib/types/database';
 import useSWR from 'swr';
 import { Suspense } from 'react';
 import { 
@@ -278,7 +278,7 @@ function WelcomeSection() {
           <div>
             <h1 className="text-3xl font-bold mb-2">
               Welcome back, {getUserDisplayName(userData).split(' ')[0]}! 👋
-            </h1>
+              </h1>
             <p className="text-blue-100 text-lg">
               Ready to process some images? You have access to {isPro ? 'all Pro tools' : '4+ free tools'}.
             </p>
@@ -292,14 +292,14 @@ function WelcomeSection() {
                   .join('')}
               </AvatarFallback>
             </Avatar>
-          </div>
-        </div>
+              </div>
+            </div>
         
         <div className="mt-6 flex flex-wrap gap-4">
           <div className="flex items-center bg-white/10 rounded-lg px-4 py-2">
             <Clock className="h-5 w-5 mr-2" />
             <span className="text-sm">Member since {new Date(userData.created_at).toLocaleDateString()}</span>
-          </div>
+            </div>
           <div className="flex items-center bg-white/10 rounded-lg px-4 py-2">
             <TrendingUp className="h-5 w-5 mr-2" />
             <span className="text-sm">{isPro ? 'Pro Plan Active' : 'Free Plan'}</span>
@@ -350,7 +350,7 @@ function QuickStats() {
         <Card key={index} className="border-0 shadow-sm hover:shadow-md transition-shadow duration-300">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
-              <div>
+            <div>
                 <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
                 <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
               </div>
@@ -365,7 +365,7 @@ function QuickStats() {
   );
 }
 
-function SubscriptionCard() {
+function SubscriptionCardWrapper() {
   const { data: userData } = useSWR<User>('/api/user', fetcher);
 
   if (!userData) {
@@ -381,67 +381,13 @@ function SubscriptionCard() {
           <div className="animate-pulse space-y-4">
             <div className="h-4 w-32 bg-gray-200 rounded"></div>
             <div className="h-3 w-48 bg-gray-200 rounded"></div>
-          </div>
+              </div>
         </CardContent>
       </Card>
     );
   }
 
-  const isPro = userData.subscription_status === 'active' || userData.subscription_status === 'trialing';
-
-  return (
-    <Card className="mb-8 border-0 shadow-sm">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <CreditCard className="h-5 w-5" />
-          Subscription Status
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <div className="mb-4 sm:mb-0">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-lg">
-                  {userData?.plan_name || 'Free Plan'}
-                </h3>
-                {isPro && (
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                    <Crown className="h-3 w-3" />
-                    Pro
-                  </div>
-                )}
-              </div>
-              <p className="text-sm text-gray-600">
-                {userData?.subscription_status === 'active'
-                  ? 'Billed monthly • Next billing date: ' + new Date().toLocaleDateString()
-                  : userData?.subscription_status === 'trialing'
-                  ? 'Trial period • Upgrade anytime'
-                  : 'No active subscription • Upgrade to unlock Pro features'}
-              </p>
-            </div>
-            <div className="flex gap-2">
-              {userData?.stripe_customer_id && (
-                <form action={customerPortalAction}>
-                  <Button type="submit" variant="outline" size="sm">
-                    Manage Billing
-                  </Button>
-                </form>
-              )}
-              {!isPro && (
-                <Link href="/pricing">
-                  <Button size="sm" className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
-                    <Crown className="h-4 w-4 mr-2" />
-                    Upgrade to Pro
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
+  return <SubscriptionCard userData={userData} />;
 }
 
 function ToolsGrid() {
@@ -457,15 +403,15 @@ function ToolsGrid() {
         <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Image Processing Tools</h2>
           <p className="text-gray-600">Choose from our comprehensive suite of professional image tools</p>
-        </div>
+              </div>
         <Link href="/tools">
           <Button variant="outline" size="sm" className="shadow-sm hover:shadow-md transition-shadow duration-300">
             View All Tools
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </Link>
-      </div>
-      
+            </div>
+
       {/* Free Tools Section */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
@@ -482,13 +428,13 @@ function ToolsGrid() {
                   <div className="flex items-start justify-between mb-4">
                     <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${tool.bgColor} ${tool.borderColor} border group-hover:scale-110 transition-transform duration-300`}>
                       <Icon icon={tool.icon} className={`h-6 w-6 ${tool.color}`} />
-                    </div>
+              </div>
                     <div className="flex flex-col items-end gap-2">
                       <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                         {tool.usage}
-                      </div>
-                    </div>
-                  </div>
+              </div>
+            </div>
+          </div>
                   
                   <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 mb-2">
                     {tool.name}
@@ -662,12 +608,12 @@ export default function DashboardPage() {
         </Suspense>
 
         <Suspense fallback={<div className="animate-pulse h-32 bg-gray-200 rounded-lg mb-8"></div>}>
-          <SubscriptionCard />
+          <SubscriptionCardWrapper />
         </Suspense>
 
         <ToolsGrid />
         <BatchProcessingSection />
-      </div>
-    </section>
+        </div>
+      </section>
   );
 }
