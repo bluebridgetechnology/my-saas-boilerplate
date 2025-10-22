@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUserProAccess } from '@/lib/auth/pro-access';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const userAccess = await getCurrentUserProAccess();

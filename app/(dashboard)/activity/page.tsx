@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Settings,
@@ -10,8 +12,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { ActivityType } from '@/lib/types/activity';
-import { DatabaseService } from '@/lib/supabase/database';
-import { getUser } from '@/lib/auth/supabase';
+import { useEffect, useState } from 'react';
 
 const iconMap: Record<ActivityType, LucideIcon> = {
   [ActivityType.SIGN_UP]: UserPlus,
@@ -55,13 +56,63 @@ function formatAction(action: ActivityType): string {
   }
 }
 
-export default async function ActivityPage() {
-  const user = await getUser();
-  if (!user) {
-    return <div>Please sign in to view activity logs.</div>;
+export default function ActivityPage() {
+  const [activities, setActivities] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await fetch('/api/user/activity');
+        if (!response.ok) {
+          throw new Error('Failed to fetch activities');
+        }
+        const data = await response.json();
+        setActivities(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex-1 p-4 lg:p-8 bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-48 mb-6"></div>
+            <div className="space-y-4">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="bg-white rounded-lg p-6">
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
-  
-  const logs = await DatabaseService.getActivityLogs(user.id);
+
+  if (error) {
+    return (
+      <div className="flex-1 p-4 lg:p-8 bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-12">
+            <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Activities</h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="flex-1 p-4 lg:p-8">
@@ -73,9 +124,9 @@ export default async function ActivityPage() {
           <CardTitle>Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
-          {logs.length > 0 ? (
+          {activities.length > 0 ? (
             <ul className="space-y-4">
-              {logs.map((log) => {
+              {activities.map((log) => {
                 const Icon = iconMap[log.action as ActivityType] || Settings;
                 const formattedAction = formatAction(
                   log.action as ActivityType
