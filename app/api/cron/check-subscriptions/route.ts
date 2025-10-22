@@ -111,6 +111,7 @@ export async function GET() {
   return NextResponse.json({
     message: 'Subscription check cron job endpoint',
     usage: 'POST to this endpoint to trigger subscription expiry checks',
-    note: 'This should be called by a cron service like Vercel Cron or GitHub Actions',
+    note: 'This should be called by a cron service like cron-job.org, GitHub Actions, or Vercel Cron',
+    auth: 'Include Authorization header with Bearer token (CRON_SECRET)',
   });
 }
