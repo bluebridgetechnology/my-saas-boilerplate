@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState, useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,29 @@ import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { signIn, signUp, forgotPassword } from './actions';
 import { ActionState } from '@/lib/auth/middleware';
 import { toast } from 'sonner';
+
+function SubmitButton({ mode }: { mode: 'signin' | 'signup' }) {
+  const { pending } = useFormStatus();
+  
+  return (
+    <Button
+      type="submit"
+      className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
+      disabled={pending}
+    >
+      {pending ? (
+        <>
+          <Loader2 className="animate-spin mr-2 h-5 w-5" />
+          {mode === 'signin' ? 'Signing in...' : 'Creating account...'}
+        </>
+      ) : (
+        <>
+          {mode === 'signin' ? 'Sign In' : 'Create Account'}
+        </>
+      )}
+    </Button>
+  );
+}
 
 export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const searchParams = useSearchParams();
@@ -20,7 +44,7 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const [showPassword, setShowPassword] = useState(false);
   const [mounted, setMounted] = useState(false);
   const redirectAttempted = useRef(false);
-  const [state, formAction, pending] = useActionState<ActionState, FormData>(
+  const [state, formAction] = useFormState<ActionState, FormData>(
     mode === 'signin' ? signIn : signUp,
     { error: '' }
   );
@@ -273,22 +297,7 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
               </div>
 
               {/* Submit Button */}
-              <Button
-                type="submit"
-                className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
-                disabled={pending}
-              >
-                {pending ? (
-                  <>
-                    <Loader2 className="animate-spin mr-2 h-5 w-5" />
-                    {mode === 'signin' ? 'Signing in...' : 'Creating account...'}
-                  </>
-                ) : (
-                  <>
-                    {mode === 'signin' ? 'Sign In' : 'Create Account'}
-                  </>
-                )}
-              </Button>
+              <SubmitButton mode={mode} />
 
               {/* Forgot Password */}
               {mode === 'signin' && (

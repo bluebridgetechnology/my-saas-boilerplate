@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,9 +13,33 @@ import { toast } from 'sonner';
 import { Navigation } from '@/components/layout/navigation';
 import { Footer } from '@/components/layout/footer';
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  
+  return (
+    <Button
+      type="submit"
+      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
+      disabled={pending}
+    >
+      {pending ? (
+        <>
+          <Loader2 className="animate-spin mr-2 h-5 w-5" />
+          Sending Reset Link...
+        </>
+      ) : (
+        <>
+          <Mail className="mr-2 h-5 w-5" />
+          Send Reset Link
+        </>
+      )}
+    </Button>
+  );
+}
+
 export function ForgotPasswordContent() {
   const [mounted, setMounted] = useState(false);
-  const [state, formAction, pending] = useActionState<ActionState, FormData>(
+  const [state, formAction] = useFormState<ActionState, FormData>(
     forgotPassword,
     { error: '' }
   );
@@ -77,20 +102,7 @@ export function ForgotPasswordContent() {
             </div>
 
             <div>
-              <Button
-                type="submit"
-                disabled={pending}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
-              >
-                {pending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending reset link...
-                  </>
-                ) : (
-                  'Send reset link'
-                )}
-              </Button>
+              <SubmitButton />
             </div>
 
             <div className="text-center">

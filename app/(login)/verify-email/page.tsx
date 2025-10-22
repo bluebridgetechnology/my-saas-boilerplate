@@ -5,30 +5,59 @@ import { useSearchParams } from 'next/navigation';
 import { Mail, CheckCircle, ArrowRight, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect, Suspense } from 'react';
-import { useActionState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { resendVerification } from '../actions';
 import { ActionState } from '@/lib/auth/middleware';
 import { toast } from 'sonner';
 
+function ResendButton() {
+  const { pending } = useFormStatus();
+  
+  return (
+    <Button
+      type="submit"
+      variant="outline"
+      className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-700 border-gray-300 hover:border-gray-400"
+      disabled={pending}
+    >
+      {pending ? (
+        <>
+          <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+          Sending...
+        </>
+      ) : (
+        <>
+          <RefreshCw className="mr-2 h-4 w-4" />
+          Resend Email
+        </>
+      )}
+    </Button>
+  );
+}
+
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email') || 'your email';
-  const [resendState, resendAction, resendPending] = useActionState<ActionState, FormData>(
+  const [resendState, resendAction] = useFormState<ActionState, FormData>(
     resendVerification,
     { error: '' }
   );
+  const [isResending, setIsResending] = useState(false);
 
   // Show toast notifications
   useEffect(() => {
     if (resendState.error) {
       toast.error(resendState.error);
+      setIsResending(false);
     }
     if (resendState.success) {
       toast.success(resendState.success);
+      setIsResending(false);
     }
   }, [resendState.error, resendState.success]);
 
   const handleResendEmail = () => {
+    setIsResending(true);
     const formData = new FormData();
     formData.append('email', email);
     resendAction(formData);
@@ -150,11 +179,11 @@ function VerifyEmailContent() {
             <div className="space-y-4">
               <Button
                 onClick={handleResendEmail}
-                disabled={resendPending}
+                disabled={isResending}
                 variant="outline"
                 className="w-full h-12 border-gray-200 text-gray-700 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
               >
-                {resendPending ? (
+                {isResending ? (
                   <>
                     <RefreshCw className="animate-spin mr-2 h-5 w-5" />
                     Resending...
@@ -182,7 +211,7 @@ function VerifyEmailContent() {
               Didn't receive the email? Check your spam folder or{' '}
               <button
                 onClick={handleResendEmail}
-                disabled={resendPending}
+                disabled={isResending}
                 className="text-blue-600 hover:text-blue-700 font-medium underline"
               >
                 resend it

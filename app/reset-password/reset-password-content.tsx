@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +14,30 @@ import { Navigation } from '@/components/layout/navigation';
 import { Footer } from '@/components/layout/footer';
 import { supabase } from '@/lib/auth/supabase-client';
 
+function SubmitButton({ sessionReady }: { sessionReady: boolean }) {
+  const { pending } = useFormStatus();
+  
+  return (
+    <Button
+      type="submit"
+      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
+      disabled={pending || !sessionReady}
+    >
+      {pending ? (
+        <>
+          <Loader2 className="animate-spin mr-2 h-5 w-5" />
+          Updating Password...
+        </>
+      ) : (
+        <>
+          <Lock className="mr-2 h-5 w-5" />
+          Update Password
+        </>
+      )}
+    </Button>
+  );
+}
+
 export function ResetPasswordContent() {
   const [mounted, setMounted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +48,7 @@ export function ResetPasswordContent() {
   const [sessionReady, setSessionReady] = useState(false);
   const [accessToken, setAccessToken] = useState<string>('');
   
-  const [state, formAction, pending] = useActionState<ActionState, FormData>(
+  const [state, formAction] = useFormState<ActionState, FormData>(
     resetPassword,
     { error: '' }
   );
@@ -316,20 +341,7 @@ export function ResetPasswordContent() {
               </div>
 
               <div>
-                <Button
-                  type="submit"
-                  disabled={pending || !sessionReady}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
-                >
-                  {pending ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Updating password...
-                    </>
-                  ) : (
-                    'Update Password'
-                  )}
-                </Button>
+                <SubmitButton sessionReady={sessionReady} />
               </div>
 
               <div className="text-center">

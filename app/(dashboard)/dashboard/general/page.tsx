@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -72,8 +72,29 @@ function AccountFormWithData({ state }: { state: ActionState }) {
   );
 }
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  
+  return (
+    <Button
+      type="submit"
+      className="bg-orange-500 hover:bg-orange-600 text-white"
+      disabled={pending}
+    >
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Saving...
+        </>
+      ) : (
+        'Save Changes'
+      )}
+    </Button>
+  );
+}
+
 export default function GeneralPage() {
-  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
+  const [state, formAction] = useFormState<ActionState, FormData>(
     updateAccount,
     {}
   );
@@ -99,20 +120,7 @@ export default function GeneralPage() {
             {state.success && (
               <p className="text-green-500 text-sm">{state.success}</p>
             )}
-            <Button
-              type="submit"
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                'Save Changes'
-              )}
-            </Button>
+            <SubmitButton />
           </form>
         </CardContent>
       </Card>
