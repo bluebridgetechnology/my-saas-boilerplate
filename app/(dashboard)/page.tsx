@@ -8,9 +8,6 @@ const Terminal = dynamicImport(() => import('./terminal').then(mod => ({ default
   loading: () => <div className="w-full h-64 bg-gray-900 rounded-lg animate-pulse"></div>
 });
 
-// Force dynamic rendering to prevent static generation issues
-export const dynamic = 'force-dynamic';
-
 export default function HomePage() {
   return (
     <main>
