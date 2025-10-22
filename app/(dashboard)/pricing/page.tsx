@@ -1,18 +1,45 @@
+'use client';
+
 import { checkoutAction } from '@/lib/payments/actions';
 import { Check, Crown, Zap, Star } from 'lucide-react';
-import { getStripePrices, getStripeProducts } from '@/lib/payments/stripe';
 import { SubmitButton } from './submit-button';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 
-// Prices are fresh for one hour max
-export const revalidate = 3600;
+export default function PricingPage() {
+  const [prices, setPrices] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function PricingPage() {
-  const [prices, products] = await Promise.all([
-    getStripePrices(),
-    getStripeProducts(),
-  ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [pricesResponse, productsResponse] = await Promise.all([
+          fetch('/api/stripe/prices'),
+          fetch('/api/stripe/products'),
+        ]);
+        
+        if (!pricesResponse.ok || !productsResponse.ok) {
+          throw new Error('Failed to fetch pricing data');
+        }
+        
+        const [pricesData, productsData] = await Promise.all([
+          pricesResponse.json(),
+          productsResponse.json(),
+        ]);
+        
+        setPrices(pricesData);
+        setProducts(productsData);
+      } catch (error) {
+        console.error('Error fetching pricing data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Find the Pro plan (assuming it's named "Pro" in Stripe)
   const proPlan = products.find((product) => 
@@ -22,6 +49,27 @@ export default async function PricingPage() {
   );
 
   const proPrice = prices.find((price) => price.productId === proPlan?.id);
+
+  if (loading) {
+    return (
+      <div className="flex-1 p-4 lg:p-8 bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-32 mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-64 mb-8"></div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+                <div className="h-48 bg-gray-200 rounded"></div>
+              </div>
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+                <div className="h-48 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 p-4 lg:p-8 bg-gray-50 min-h-screen">
