@@ -1,6 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CreditCard, Database } from 'lucide-react';
-import { Terminal } from './terminal';
+import dynamicImport from 'next/dynamic';
+
+// Dynamically import Terminal to prevent SSR issues
+const Terminal = dynamicImport(() => import('./terminal').then(mod => ({ default: mod.Terminal })), {
+  ssr: false,
+  loading: () => <div className="w-full h-64 bg-gray-900 rounded-lg animate-pulse"></div>
+});
+
+// Force dynamic rendering to prevent static generation issues
+export const dynamic = 'force-dynamic';
 
 export default function HomePage() {
   return (
